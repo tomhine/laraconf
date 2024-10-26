@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Run Larastan checks
+## Usage: stan
+## Example: ddev stan
+
+./vendor/bin/phpstan analyse "$@"
