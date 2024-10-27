@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ConferenceStatus;
+use App\Enums\Region;
 use Database\Factories\ConferenceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,8 @@ class Conference extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'status' => ConferenceStatus::class,
+        'is_published' => 'boolean',
+        'region' => Region::class,
     ];
 
     /**

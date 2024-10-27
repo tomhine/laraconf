@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('conferences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('venue_id')->nullable();
-            $table->string('name')->index();
+            $table->string('name', 60)->index();
             $table->text('description');
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
+            $table->boolean('is_published')->default(false);
             $table->string('status');
             $table->string('region');
             $table->timestamps();

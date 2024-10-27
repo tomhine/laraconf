@@ -23,17 +23,24 @@ class ConferenceResource extends Resource
             ->schema([
                 Forms\Components\Select::make('venue_id')
                     ->relationship('venue', 'name')
-                    ->default(null),
+                    ->default(null)
+                    ->native(false)
+                    ->searchable(),
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                    ->maxLength(60),
+                Forms\Components\RichEditor::make('description')
                     ->required()
+                    ->disableToolbarButtons(['attachFiles'])
                     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('starts_at')
-                    ->required(),
+                    ->required()
+                    ->native(false),
                 Forms\Components\DateTimePicker::make('ends_at')
-                    ->required(),
+                    ->required()
+                    ->after('starts_at')
+                    ->native(false),
+                Forms\Components\Checkbox::make('is_published'),
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options(ConferenceStatus::class)
