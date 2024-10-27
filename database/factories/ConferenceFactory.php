@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\ConferenceStatus;
 use App\Models\Conference;
+use App\Models\Talk;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -43,6 +44,20 @@ class ConferenceFactory extends Factory
             return [
                 'venue_id' => $venue?->id ?? Venue::factory(),
             ];
+        });
+    }
+
+    /**
+     * Include talks with the conference.
+     *
+     * @return Factory<Conference>
+     */
+    public function withTalks(int $count = 1): Factory
+    {
+        return $this->afterCreating(function (Conference $conference) use ($count) {
+            $conference->talks()->attach(
+                Talk::factory()->count($count)->create()
+            );
         });
     }
 }
