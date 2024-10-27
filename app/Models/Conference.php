@@ -50,4 +50,8 @@ class Conference extends Model
      *
      * @return BelongsToMany<Talk, $this>
      */
+    public function talks(): BelongsToMany
+    {
+        return $this->belongsToMany(Talk::class);
+    }
 }
