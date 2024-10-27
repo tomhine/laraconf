@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Run Laravel Pint to format your code
+## Usage: pint
+## Example: ddev pint
+
+./vendor/bin/pint "$@"
