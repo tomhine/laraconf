@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ConferenceStatus;
+use App\Enums\Region;
 use App\Filament\Resources\ConferenceResource\Pages;
 use App\Models\Conference;
 use Filament\Forms;
@@ -10,25 +11,26 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ConferenceResource extends Resource
 {
     protected static ?string $model = Conference::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('venue_id')
-                    ->relationship('venue', 'name')
-                    ->default(null)
-                    ->native(false)
-                    ->searchable(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(60),
+                Forms\Components\Select::make('status')
+                    ->enum(ConferenceStatus::class)
+                    ->options(ConferenceStatus::class)
+                    ->required()
+                    ->default(ConferenceStatus::Upcoming),
                 Forms\Components\RichEditor::make('description')
                     ->required()
                     ->disableToolbarButtons(['attachFiles'])
@@ -40,14 +42,19 @@ class ConferenceResource extends Resource
                     ->required()
                     ->after('starts_at')
                     ->native(false),
+                Forms\Components\Select::make('region')
+                    ->enum(Region::class)
+                    ->options(Region::class)
+                    ->required()
+                    ->live(),
+                Forms\Components\Select::make('venue_id')
+                    ->relationship('venue', 'name', modifyQueryUsing: function (Builder $query, Forms\Get $get) {
+                        return $query->where('region', $get('region'));
+                    })
+                    ->default(null)
+                    ->native(false)
+                    ->live(),
                 Forms\Components\Checkbox::make('is_published'),
-                Forms\Components\Select::make('status')
-                    ->required()
-                    ->options(ConferenceStatus::class)
-                    ->default(ConferenceStatus::Upcoming),
-                Forms\Components\TextInput::make('region')
-                    ->required()
-                    ->maxLength(255),
             ]);
     }
 

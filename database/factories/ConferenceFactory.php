@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\ConferenceStatus;
+use App\Enums\Region;
 use App\Models\Conference;
 use App\Models\Talk;
 use App\Models\Venue;
@@ -28,7 +29,7 @@ class ConferenceFactory extends Factory
             'starts_at' => $startsAt,
             'ends_at' => $this->faker->dateTimeBetween($startsAt, '+1 year'),
             'status' => $this->faker->randomElement(ConferenceStatus::class),
-            'region' => $this->faker->countryCode(),
+            'region' => Region::cases()[rand(0, count(Region::cases()) - 1)]->value,
             'venue_id' => null,
         ];
     }
@@ -40,9 +41,9 @@ class ConferenceFactory extends Factory
      */
     public function withVenue(?Venue $venue = null): Factory
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function (array $attributes) use ($venue) {
             return [
-                'venue_id' => $venue?->id ?? Venue::factory(),
+                'venue_id' => $venue->id ?? Venue::factory(),
             ];
         });
     }

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Run the Pest tests in the codebase
+## Usage: pest
+## Example: ddev pest
+
+./vendor/bin/pest "$@"

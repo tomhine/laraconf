@@ -8,5 +8,5 @@ enum Region: string
     case EU = 'EU';
     case AU = 'AU';
     case IN = 'IN';
-    case ONLINE = 'ONLINE';
+    case Online = 'Online';
 }

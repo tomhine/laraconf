@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Region;
 use App\Filament\Resources\VenueResource\Pages;
 use App\Models\Venue;
 use Filament\Forms;
@@ -14,7 +15,7 @@ class VenueResource extends Resource
 {
     protected static ?string $model = Venue::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
     public static function form(Form $form): Form
     {
@@ -32,6 +33,10 @@ class VenueResource extends Resource
                 Forms\Components\TextInput::make('postal_code')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('region')
+                    ->enum(Region::class)
+                    ->options(Region::class)
+                    ->required(),
             ]);
     }
 
