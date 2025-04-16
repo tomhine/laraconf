@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Helper command to run pint then phpstan and then pest tests
+
+./vendor/bin/pint && ./vendor/bin/phpstan analyse && ./vendor/bin/pest --bail

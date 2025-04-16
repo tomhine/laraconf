@@ -28,9 +28,8 @@ class ConferenceFactory extends Factory
             'description' => $this->faker->sentence(),
             'starts_at' => $startsAt,
             'ends_at' => $this->faker->dateTimeBetween($startsAt, '+1 year'),
+            'region' => $this->faker->randomElement(Region::class),
             'status' => $this->faker->randomElement(ConferenceStatus::class),
-            'region' => Region::cases()[rand(0, count(Region::cases()) - 1)]->value,
-            'venue_id' => null,
         ];
     }
 
@@ -59,6 +58,20 @@ class ConferenceFactory extends Factory
             $conference->talks()->attach(
                 Talk::factory()->count($count)->create()
             );
+        });
+    }
+
+    /**
+     * Specify a region for the conference
+     *
+     * @return Factory<Conference>
+     */
+    public function region(Region $region): Factory
+    {
+        return $this->state(function (array $attributes) use ($region) {
+            return [
+                'region' => $region,
+            ];
         });
     }
 }

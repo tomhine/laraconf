@@ -6,6 +6,7 @@ use App\Enums\ConferenceStatus;
 use App\Enums\Region;
 use App\Filament\Resources\ConferenceResource\Pages;
 use App\Models\Conference;
+use App\Models\Venue;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -49,11 +50,15 @@ class ConferenceResource extends Resource
                     ->live(),
                 Forms\Components\Select::make('venue_id')
                     ->relationship('venue', 'name', modifyQueryUsing: function (Builder $query, Forms\Get $get) {
-                        return $query->where('region', $get('region'));
+                        $query->where('region', $get('region'));
                     })
+                    ->searchable()
+                    ->preload()
                     ->default(null)
                     ->native(false)
-                    ->live(),
+                    ->live()
+                    ->editOptionForm(Venue::getForm())
+                    ->createOptionForm(Venue::getForm()),
                 Forms\Components\Checkbox::make('is_published'),
             ]);
     }
@@ -62,11 +67,11 @@ class ConferenceResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('venue.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('starts_at')
                     ->dateTime()
                     ->sortable(),
