@@ -22,6 +22,9 @@ export default defineConfig({
         strictPort: true,
         // Defines the origin of the generated asset URLs during development,
         // this will also be used for the public/hot file (Vite devserver URL)
-        origin: origin
+        origin: origin,
+        cors: {
+            origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.test\)(?::\d+)?$/,
+        },
     }
 });
